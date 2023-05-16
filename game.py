@@ -18,8 +18,7 @@ player_size = (20, 20)
 player = p.Surface(player_size)
 player.fill(COLOR_WHITE)
 player_rect = player.get_rect()
-player_rect.topleft = (10, 10)
-player_speed = [11, 13]
+player_speed = [-11, -13]
 
 playing = True
 
