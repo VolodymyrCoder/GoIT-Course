@@ -1,4 +1,5 @@
 from random import randint
+import os
 
 import pygame as p
 from pygame.constants import K_DOWN, K_LEFT, K_RIGHT, K_UP, QUIT
@@ -24,6 +25,9 @@ bg_x1 = 0
 bg_x2 = bg.get_width()
 bg_move = 3
 
+IMAGE_PATH = "goose"
+PLAYER_IMAGES = os.listdir(IMAGE_PATH)
+
 player = p.image.load('player.png').convert_alpha()
 player_rect = p.Rect(0, HEIGHT / 2 - 76, 182, 76)
 player_move_down = [0, 8]
@@ -44,7 +48,7 @@ def create_enemy():
 
 
 CREATE_ENEMY = p.USEREVENT + 1
-p.time.set_timer(CREATE_ENEMY, 3000)
+p.time.set_timer(CREATE_ENEMY, 4500)
 
 enemies = []
 
@@ -61,11 +65,16 @@ def create_bonus():
 
 
 CREATE_BONUS = p.USEREVENT + 2
-p.time.set_timer(CREATE_BONUS, 3000)
+p.time.set_timer(CREATE_BONUS, 6000)
 
 bonuses = []
 
 score = 0
+
+CHANGE_IMAGE = p.USEREVENT + 3
+p.time.set_timer(CHANGE_IMAGE, 200)
+
+image_index = 0
 
 playing = True
 
@@ -78,6 +87,12 @@ while playing:
             enemies.append(create_enemy())
         if event.type == CREATE_BONUS:
             bonuses.append(create_bonus())
+        if event.type == CHANGE_IMAGE:
+            player = p.image.load(os.path.join(
+                IMAGE_PATH, PLAYER_IMAGES[image_index]))
+            image_index += 1
+            if image_index >= len(PLAYER_IMAGES):
+                image_index = 0
 
     bg_x1 -= bg_move
     bg_x2 -= bg_move
